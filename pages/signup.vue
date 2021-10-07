@@ -5,6 +5,7 @@
     <v-text-field v-model="password2" placeholder="Repita el Password" type="password">
     </v-text-field>
     <v-btn block elevation="2" x-large @click="onClick">Enviar</v-btn>
+          <nuxt-link to="/Login">Login</nuxt-link>
   </div>
 </template>
 

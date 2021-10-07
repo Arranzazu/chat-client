@@ -4,6 +4,7 @@
     <v-text-field v-model="password" placeholder="Password" type="password"></v-text-field>
  
     <v-btn block elevation="2" x-large @click="onClick">Enviar</v-btn>
+    <br>  <p>¿No tienes usuario? <nuxt-link to="/signup">Regístrate</nuxt-link></p>
   </div>
 </template>
 
@@ -21,7 +22,7 @@ export default {
       const body = {
         email: this.email,
         password: this.password,
-      }
+                    }
       try {
         const res = await fetch(url, {
           method: 'post',
@@ -35,13 +36,11 @@ export default {
           alert(data.error)
           return
         }
-        // Almacenar token:
-        // const payload = {
-        //   token: data.token
-        // }
-        // window.localStorage.setItem('token', JSON.stringify(payload))
+      
         window.localStorage.setItem('token', data.token)
         window.localStorage.setItem('userId', data.userId)
+        window.localStorage.setItem('admin', data.admin)
+        window.localStorage.setItem('email', data.email)
         this.$router.push('/users')
       } catch (err) {
       }

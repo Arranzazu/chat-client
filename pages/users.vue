@@ -1,17 +1,41 @@
 <template>
-
   <div class="users">
-      <div><p class='Heading 2'> Usuario {{ users.email }} conectado.  </p> <br><br>¿Con quién quieres chatear?<hr><br></div>
-          <div v-for="user in users" :key="user._id">
-      <p class="text-center">{{ user.email }} 
-          <v-btn class="green white--text" @click="redirect(user._id)"> Iniciar chat</v-btn> 
-          <v-btn v-if="user.admin == 'true'" class="red white--text" @click="suprime(user._id)"> X </v-btn>
+    <div>
+      <div>
+        <p class="px-4 pt-4 pb-3 font-weight-medium">
+          Usuario {{ email }} conectado.  </p><p v-if="isAdmin"> Eres Admin</p>
+    
+      </div>
+    </div>
+    <br /><br />¿Con quién quieres chatear?
+    <hr />
+    <br />
+    <div v-for="user in users" :key="user._id">
+      <p class="text-center">
+        {{ user.email }}&nbsp;&nbsp;&nbsp;
+        <v-btn
+          class="green white--text"
+          title="Iniciar Chat"
+          @click="redirect(user._id)"
+        >
+          Iniciar chat</v-btn
+        >&nbsp;&nbsp;
+        <v-btn v-if="isAdmin"
+          class="red white--text"
+          title="Eliminar Usuario"
+          @click="suprime(user._id)"
+        >
+          X
+        </v-btn>
+        
       </p>
-  </div>
-    
-    <div><v-btn @click="logout()" class="red white--text"> Logout</v-btn></div>
-    
+    </div>
 
+    <div>
+      <v-btn @click="logout()" class="red white--text" title="Logout">
+        Logout</v-btn
+      >
+    </div>
   </div>
 </template>
 
@@ -20,38 +44,41 @@ export default {
   data() {
     return {
       users: [],
+      user: '',
+      isAdmin: '',
       email: undefined,
     }
   },
-// si no tiene token le echamos a login
+
+  // si no tiene token le echamos a login
   async beforeMount() {
     const token = window.localStorage.getItem('token')
-        if (!token) {
+
+    if (!token) {
       this.$router.push('/login')
     }
-
     await this.getAllUsers(token)
+    //reviso si es admin
+    this.isAdmin = window.localStorage.getItem('admin') === 'true'
+    this.email = window.localStorage.getItem('email')
   },
   methods: {
     redirect(id) {
       this.$router.push(`/chat/${id}`)
     },
 
-     async suprime(id) {
-      const url = `http://localhost:4500/user/suprime/${id}`;
-      await fetch(url, {
-          method: 'delete',
-          headers: {
-            token: this.token,
-          },
-        });
-    }, 
+    async suprime(id) {
+      await fetch('http://localhost:4500/user/suprime/' + id, {
+        method: 'delete',
+      })
+     location.reload(); 
+    },
 
 
-    logout(){
-        const token = window.localStorage.getItem('token')
-        window.localStorage.removeItem('token');
-        this.$router.push('/login')
+    logout() {
+      const token = window.localStorage.getItem('token')
+      window.localStorage.removeItem('token')
+      this.$router.push('/login')
     },
 
     async getAllUsers(token) {
@@ -62,9 +89,9 @@ export default {
           },
         })
         const data = await res.json() //creo la data que debo llenar
-        console.log( {data} ) //imprimo la data
-       
-       if (data.error) {
+        console.log({ data }) //imprimo la data
+
+        if (data.error) {
           alert(data.error)
           return this.$router.push('/login')
         }

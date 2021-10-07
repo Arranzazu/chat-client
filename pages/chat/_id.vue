@@ -1,17 +1,21 @@
 <template>
   <div class="chat">
-        <nuxt-link to="../users">Back to Users</nuxt-link>
+         
+         <v-btn class="blue white--text" @click="$router.push('../users')" title="Vuelta a usuarios">Usuarios</v-btn>
+        
+        
+        <br><br>Chat de {{ userMail }}<br>
     <div class="container-message" v-if="userId && paramId">
       <div class="message" v-for="message in messages" :key="message._id">
         <p v-if="message.userOwner == userId" class="text-right">Yo:</p>
-        <p v-else class="indigo--text text--darken-2">{{ message.userTwo }} dice:</p>
+        <p v-else class="indigo--text text--darken-2">{{ message.userTwo }} {{ userMail }}  dice:</p>
          <p v-if="message.userOwner == userId"  class="text-right">{{ message.text }}</p>
         <p v-else>{{ message.text }}</p>
 
       </div>
 
       <v-text-field v-model="message"> </v-text-field>
-      <v-btn @click="sendMessage">Submit</v-btn>
+      <v-btn @click="sendMessage"  title="Enviar Mensage" >Enviar</v-btn>
     </div>
   </div>
 </template>
@@ -30,6 +34,7 @@ export default {
   async beforeMount() {
     this.paramId = this.$route.params.id
     this.userId = window.localStorage.getItem('userId')
+     this.userMail = window.localStorage.getItem('email')
 
     const token = window.localStorage.getItem('token')
     if (!token) {
@@ -66,12 +71,13 @@ export default {
         } else {
           this.messages = []
           await this.getMessages(token)
+         
         }
       } catch (err) {
         alert(err)
       }
     },
-
+  
     async getMessages(token) {
       try {
         const userOneId = window.localStorage.getItem('userId')
