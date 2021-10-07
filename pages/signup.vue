@@ -1,11 +1,14 @@
 <template>
-  <div class="signUp">
+  <div class="signUp"> <ChatBar /><br><br>
+     <v-col class="col-md-6 offset-md-3">
     <v-text-field v-model="email" placeholder="Email"> </v-text-field>
     <v-text-field v-model="password1" placeholder="Password" type="password"></v-text-field>
     <v-text-field v-model="password2" placeholder="Repita el Password" type="password">
     </v-text-field>
     <v-btn block elevation="2" x-large @click="onClick">Enviar</v-btn>
           <nuxt-link to="/Login">Login</nuxt-link>
+     </v-col>
+     <ChatFooter />
   </div>
 </template>
 

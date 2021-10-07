@@ -1,6 +1,7 @@
 <template>
   <div class="chat">
-         
+    <ChatBar /><br><br>
+           <v-col class="col-md-6 offset-md-3">
          <v-btn class="blue white--text" @click="$router.push('../users')" title="Vuelta a usuarios">Usuarios</v-btn>
         
         
@@ -17,6 +18,8 @@
       <v-text-field v-model="message"> </v-text-field>
       <v-btn @click="sendMessage"  title="Enviar Mensage" >Enviar</v-btn>
     </div>
+           </v-col>
+             <ChatFooter />
   </div>
 </template>
 

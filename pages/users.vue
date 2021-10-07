@@ -1,8 +1,10 @@
 <template>
   <div class="users">
+    <ChatBar />
+      <v-col class="col-md-6 offset-md-3">
     <div>
       <div>
-        <p class="px-4 pt-4 pb-3 font-weight-medium">
+        <p class="px-4 pt-4 pb-3 font-weight-medium"><br><br>
           Usuario {{ email }} conectado.  </p><p v-if="isAdmin"> Eres Admin</p>
     
       </div>
@@ -36,7 +38,10 @@
         Logout</v-btn
       >
     </div>
+      </v-col>
+          <ChatFooter />
   </div>
+  
 </template>
 
 <script>
